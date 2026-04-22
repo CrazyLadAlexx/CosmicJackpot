@@ -44,7 +44,7 @@ public class Jackpot {
         Integer current = this.entries.get(info);
         Bukkit.getLogger().info("(CosmicJackpot) Purchasing " + tickets + " ticket(s) for " + player.getName()
                 + (current != null ? " with " + current + " current total." : " with 0 current."));
-        this.entries.put(info, (current == null ? 0 : current) + tickets);
+        this.entries.merge(info, tickets, Integer::sum);
         this.totalWinnings += (long) cost;
     }
 
@@ -69,13 +69,10 @@ public class Jackpot {
     }
 
     public int getTicketsPurchased(UUID uuid) {
-        int found = 0;
-        for (Map.Entry<PlayerInfo, Integer> entry : this.entries.entrySet()) {
-            if (entry.getKey().getUuid().equals(uuid)) {
-                found += entry.getValue();
-            }
-        }
-        return found;
+        return this.entries.entrySet().stream()
+                .filter(entry -> entry.getKey().getUuid().equals(uuid))
+                .mapToInt(Map.Entry::getValue)
+                .sum();
     }
 
     public int getTicketPrice() {
@@ -83,11 +80,9 @@ public class Jackpot {
     }
 
     public int getTicketsSold() {
-        int total = 0;
-        for (Integer tickets : this.entries.values()) {
-            total += tickets;
-        }
-        return total;
+        return this.entries.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
     public long getPlayerWinnings() {

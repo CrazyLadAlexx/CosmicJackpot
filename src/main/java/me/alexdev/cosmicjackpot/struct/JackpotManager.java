@@ -12,11 +12,8 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,7 +54,7 @@ public class JackpotManager {
     private Jackpot currentJackpot;
     private long taxesCollected;
     private int defaultDrawTime = (int) TimeUnit.HOURS.toSeconds(2L);
-    private LinkedList<JackpotHistory> sortedHistory = new LinkedList<>();
+    private List<JackpotHistory> sortedHistory = List.of();
     private long lastListUpdate;
 
     public void onJackpotTick() {
@@ -105,9 +102,9 @@ public class JackpotManager {
     public Inventory getJackpotConfirmMenu(int ticketsToBuy, double totalCost) {
         Inventory inventory = Bukkit.createInventory(null, 9, CONFIRM_MENU_TITLE);
         for (int i = 5; i < 9; ++i) {
-            inventory.setItem(i, ItemUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + ChatColor.BOLD.toString() + "Cancel Purchase", Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.RED + "cancel" + ChatColor.GRAY + " ticket purchase.")));
+            inventory.setItem(i, ItemUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + ChatColor.BOLD.toString() + "Cancel Purchase", List.of(ChatColor.GRAY + "Click to " + ChatColor.RED + "cancel" + ChatColor.GRAY + " ticket purchase.")));
         }
-        List<String> lore = new ArrayList<>(Arrays.asList(
+        List<String> lore = new ArrayList<>(List.of(
                 ChatColor.GRAY + "Click to " + ChatColor.GREEN + "confirm" + ChatColor.GRAY + " purchase of",
                 ChatColor.GREEN + this.moneyFormat.format(ticketsToBuy) + ChatColor.GRAY + " ticket(s) for " + ChatColor.GREEN + ChatColor.BOLD + "$" + ChatColor.GREEN + this.moneyFormat.format(totalCost)
         ));
@@ -195,16 +192,13 @@ public class JackpotManager {
         CosmicJackpot.get().saveConfig();
     }
 
-    public LinkedList<JackpotHistory> getSortedJackpotHistory() {
+    public List<JackpotHistory> getSortedJackpotHistory() {
         if (this.lastListUpdate == 0L || System.currentTimeMillis() - this.lastListUpdate >= CACHE_REFRESH_MILLIS) {
             this.lastListUpdate = System.currentTimeMillis();
-            this.sortedHistory = new LinkedList<>();
-            for (JackpotHistory hist : this.jackpotHistory.values()) {
-                if (hist.getJackpotWins() > 0.0 && hist.getJackpotWinnings() > 0L) {
-                    this.sortedHistory.add(hist);
-                }
-            }
-            Collections.sort(this.sortedHistory);
+            this.sortedHistory = this.jackpotHistory.values().stream()
+                    .filter(hist -> hist.getJackpotWins() > 0.0 && hist.getJackpotWinnings() > 0L)
+                    .sorted()
+                    .toList();
         }
         return this.sortedHistory;
     }

@@ -45,7 +45,9 @@ public final class CosmicJackpot extends JavaPlugin {
         if (command == null) {
             throw new IllegalStateException("Command 'jackpot' is missing from plugin.yml");
         }
-        command.setExecutor(new CommandJackpot());
+        CommandJackpot jackpotCommand = new CommandJackpot();
+        command.setExecutor(jackpotCommand);
+        command.setTabCompleter(jackpotCommand);
     }
 
     private boolean setupEconomy() {

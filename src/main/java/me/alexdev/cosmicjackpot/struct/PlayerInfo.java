@@ -18,10 +18,9 @@ public class PlayerInfo {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof PlayerInfo)) {
+        if (!(obj instanceof PlayerInfo other)) {
             return false;
         }
-        PlayerInfo other = (PlayerInfo) obj;
         return Objects.equals(this.uuid, other.uuid);
     }
 

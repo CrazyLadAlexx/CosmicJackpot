@@ -8,13 +8,11 @@ CosmicJackpot is a Maven-based Bukkit/Spigot jackpot plugin using Vault for econ
 - Main: `me.alexdev.cosmicjackpot.CosmicJackpot`
 - Author: `Alex`
 - Dependency: `Vault`
-- Compiled target: `Java 8` bytecode
+- Compiled target: `Java 17` bytecode
 - Server Java runtime:
-  - `1.16.x`: Java 8
-  - `1.17.x`: Java 16
   - `1.18.x` through `1.20.4`: Java 17
   - `1.20.5` through `1.21.11`: Java 21
-- Intended server range: `1.16` through `1.21.11` Bukkit/Spigot-compatible versions
+- Intended server range: modern Bukkit/Spigot-compatible servers using the `1.20` API or newer
 
 ## Build
 
@@ -36,11 +34,14 @@ The compiled plugin jar will be created in `target/`.
 | Command | Description |
 | --- | --- |
 | `/jackpot` | View the current jackpot. |
+| `/jackpot info` | View the current jackpot. |
 | `/jackpot buy` | Buy 1 jackpot ticket. |
 | `/jackpot buy <amount>` | Buy a specific amount of jackpot tickets. |
-| `/jackpot top` | View the top jackpot winners. |
+| `/jackpot top [page]` | View the top jackpot winners. |
 | `/jackpot stats` | View your jackpot stats. |
 | `/jackpot notifications` | Toggle jackpot countdown notifications. |
+
+The `/jackpot` subcommands and common arguments tab-complete in game.
 
 ## Config
 
