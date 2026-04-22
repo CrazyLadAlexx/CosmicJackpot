@@ -1,6 +1,5 @@
 package me.alexdev.cosmicjackpot.struct;
 
-import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -98,7 +97,7 @@ public class Jackpot {
         if (this.entries.isEmpty()) {
             return null;
         }
-        ArrayList winnerPool = Lists.newArrayList();
+        ArrayList winnerPool = new ArrayList();
         this.entries.forEach((info, values) -> {
             for (int i = 0; i < values; ++i) {
                 winnerPool.add(info);
@@ -128,4 +127,3 @@ public class Jackpot {
         this.secondsLeft = secondsLeft;
     }
 }
-

@@ -1,6 +1,5 @@
 package me.alexdev.cosmicjackpot.struct;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -122,7 +121,7 @@ public class JackpotManager {
         for (int i = 5; i < 9; ++i) {
             inv.setItem(i, ItemUtils.createItem(Material.STAINED_GLASS_PANE, DyeColor.RED.getWoolData(), ChatColor.RED + ChatColor.BOLD.toString() + "Cancel Purchase", Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.RED + "cancel" + ChatColor.GRAY + " ticket purchase.")));
         }
-        ArrayList lore = Lists.newArrayList((Object[])new String[]{ChatColor.GRAY + "Click to " + ChatColor.GREEN + "confirm" + ChatColor.GRAY + " purchase of", ChatColor.GREEN + this.moneyFormat.format(ticketsToBuy) + ChatColor.GRAY + " ticket(s) for " + ChatColor.GREEN + ChatColor.BOLD + "$" + ChatColor.GREEN + this.moneyFormat.format(totalCost)});
+        ArrayList lore = new ArrayList(Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.GREEN + "confirm" + ChatColor.GRAY + " purchase of", ChatColor.GREEN + this.moneyFormat.format(ticketsToBuy) + ChatColor.GRAY + " ticket(s) for " + ChatColor.GREEN + ChatColor.BOLD + "$" + ChatColor.GREEN + this.moneyFormat.format(totalCost)));
         if (ticketsToBuy > 1) {
             lore.add(ChatColor.GRAY + "at " + ChatColor.GREEN + ChatColor.BOLD.toString() + "$" + ChatColor.GREEN + this.moneyFormat.format(this.currentJackpot.getTicketPrice()) + "/ea");
         }
