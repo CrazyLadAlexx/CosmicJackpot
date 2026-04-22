@@ -45,3 +45,7 @@ drawTime: 14400
 ```
 
 `drawTime` is in seconds.
+
+## Support
+
+If there are any problems, add me on Discord: `._._crazyladalex_.`
