@@ -29,7 +29,6 @@ import me.alexdev.cosmicjackpot.utils.ItemUtils;
 import me.alexdev.cosmicjackpot.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -119,14 +118,14 @@ public class JackpotManager {
     public Inventory getJackpotConfirmMenu(int ticketsToBuy, double totalCost) {
         Inventory inv = Bukkit.createInventory(null, (int)9, (String)"Confirm Ticket Purchase");
         for (int i = 5; i < 9; ++i) {
-            inv.setItem(i, ItemUtils.createItem(Material.STAINED_GLASS_PANE, DyeColor.RED.getWoolData(), ChatColor.RED + ChatColor.BOLD.toString() + "Cancel Purchase", Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.RED + "cancel" + ChatColor.GRAY + " ticket purchase.")));
+            inv.setItem(i, ItemUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + ChatColor.BOLD.toString() + "Cancel Purchase", Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.RED + "cancel" + ChatColor.GRAY + " ticket purchase.")));
         }
         ArrayList lore = new ArrayList(Arrays.asList(ChatColor.GRAY + "Click to " + ChatColor.GREEN + "confirm" + ChatColor.GRAY + " purchase of", ChatColor.GREEN + this.moneyFormat.format(ticketsToBuy) + ChatColor.GRAY + " ticket(s) for " + ChatColor.GREEN + ChatColor.BOLD + "$" + ChatColor.GREEN + this.moneyFormat.format(totalCost)));
         if (ticketsToBuy > 1) {
             lore.add(ChatColor.GRAY + "at " + ChatColor.GREEN + ChatColor.BOLD.toString() + "$" + ChatColor.GREEN + this.moneyFormat.format(this.currentJackpot.getTicketPrice()) + "/ea");
         }
         for (int i = 0; i < 4; ++i) {
-            inv.setItem(i, ItemUtils.createItem(Material.STAINED_GLASS_PANE, DyeColor.LIME.getWoolData(), ChatColor.GREEN + ChatColor.BOLD.toString() + "Confirm Purchase", lore));
+            inv.setItem(i, ItemUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + ChatColor.BOLD.toString() + "Confirm Purchase", lore));
         }
         return inv;
     }

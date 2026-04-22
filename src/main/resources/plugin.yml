@@ -2,6 +2,7 @@ name: CosmicJackpot
 version: ${project.version}
 main: me.alexdev.cosmicjackpot.CosmicJackpot
 author: Alex
+api-version: 1.16
 depend: [Vault]
 commands:
   jackpot:

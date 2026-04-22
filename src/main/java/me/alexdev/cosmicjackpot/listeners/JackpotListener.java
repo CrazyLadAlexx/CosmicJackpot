@@ -6,7 +6,6 @@ import me.alexdev.cosmicjackpot.struct.JackpotHistory;
 import me.alexdev.cosmicjackpot.struct.JackpotManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -32,11 +31,11 @@ implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().getName().equalsIgnoreCase("Confirm Ticket Purchase")) {
+        if (event.getView().getTitle().equalsIgnoreCase("Confirm Ticket Purchase")) {
             event.setCancelled(true);
             event.setResult(Event.Result.DENY);
             ItemStack clicked = event.getCurrentItem();
-            if (clicked == null || clicked.getType() != Material.STAINED_GLASS_PANE) {
+            if (clicked == null || clicked.getType() != Material.LIME_STAINED_GLASS_PANE && clicked.getType() != Material.RED_STAINED_GLASS_PANE) {
                 return;
             }
             Player player = (Player)event.getWhoClicked();
@@ -46,11 +45,10 @@ implements Listener {
             }
             int ticketsToPurchase = ((MetadataValue)player.getMetadata("jackpotTicket").get(0)).asInt();
             player.removeMetadata("jackpotTicket", (Plugin)CosmicJackpot.get());
-            short data = clicked.getData().getData();
-            if (data == DyeColor.LIME.getWoolData()) {
+            if (clicked.getType() == Material.LIME_STAINED_GLASS_PANE) {
                 player.closeInventory();
                 this.confirmPurchase(player, ticketsToPurchase);
-            } else if (data == DyeColor.RED.getWoolData()) {
+            } else if (clicked.getType() == Material.RED_STAINED_GLASS_PANE) {
                 player.closeInventory();
                 player.sendMessage(ChatColor.RED + ChatColor.BOLD.toString() + "(!) " + ChatColor.RED + "Jackpot Ticket Purchase cancelled.");
             }
@@ -89,7 +87,7 @@ implements Listener {
         player.sendMessage(ChatColor.GREEN + "You have purchased " + ticketsToPurchase + " ticket" + (ticketsToPurchase > 1 ? "s" : "") + " for " + ChatColor.GREEN + ChatColor.BOLD.toString() + "$" + ChatColor.GREEN + manager.getMoneyFormat().format(price) + "!");
         player.sendMessage(ChatColor.GRAY + "Use " + ChatColor.GRAY + ChatColor.UNDERLINE.toString() + "/jackpot" + ChatColor.GRAY + " to view current Jackpot information!");
         player.sendMessage("");
-        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 1.4f);
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.4f);
         Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)("contest add " + player.getUniqueId() + " lotteryTickets " + ticketsToPurchase));
         Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)("contest add " + player.getUniqueId() + " lotteryMoneySpent " + price));
         JackpotHistory history = manager.getJackpotHistory().computeIfAbsent(player.getUniqueId(), e -> new JackpotHistory(player.getName()));

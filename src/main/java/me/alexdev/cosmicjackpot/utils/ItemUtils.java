@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtils {
-    public static ItemStack createItem(Material material, short data, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material, 1, data);
+    public static ItemStack createItem(Material material, String name, List<String> lore) {
+        ItemStack item = new ItemStack(material);
         ItemMeta im = item.getItemMeta();
         im.setDisplayName(name);
         im.setLore(lore);
@@ -15,4 +15,3 @@ public class ItemUtils {
         return item;
     }
 }
-
