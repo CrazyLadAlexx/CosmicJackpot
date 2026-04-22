@@ -1,7 +1,7 @@
 package me.alexdev.cosmicjackpot.struct;
 
-import java.util.UUID;
 import java.util.Objects;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class PlayerInfo {
@@ -13,14 +13,19 @@ public class PlayerInfo {
         this.uuid = player.getUniqueId();
     }
 
+    @Override
     public boolean equals(Object obj) {
-        PlayerInfo other;
-        if (obj instanceof PlayerInfo && (other = (PlayerInfo)obj).getUuid().equals(this.uuid)) {
+        if (this == obj) {
             return true;
         }
-        return super.equals(obj);
+        if (!(obj instanceof PlayerInfo)) {
+            return false;
+        }
+        PlayerInfo other = (PlayerInfo) obj;
+        return Objects.equals(this.uuid, other.uuid);
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(this.uuid);
     }

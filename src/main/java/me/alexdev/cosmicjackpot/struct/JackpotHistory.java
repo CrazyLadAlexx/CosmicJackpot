@@ -1,7 +1,6 @@
 package me.alexdev.cosmicjackpot.struct;
 
-public class JackpotHistory
-implements Comparable {
+public class JackpotHistory implements Comparable<JackpotHistory> {
     private String name;
     private double jackpotWins;
     private long jackpotWinnings;
@@ -14,18 +13,13 @@ implements Comparable {
     public JackpotHistory() {
     }
 
-    public int compareTo(Object o) {
-        if (o instanceof JackpotHistory) {
-            JackpotHistory other = (JackpotHistory)o;
-            if (other.getJackpotWinnings() == this.getJackpotWinnings() && other.getJackpotWins() > this.getJackpotWins()) {
-                return 1;
-            }
-            if (other.getJackpotWinnings() > this.getJackpotWinnings()) {
-                return 1;
-            }
-            return -1;
+    @Override
+    public int compareTo(JackpotHistory other) {
+        int winnings = Long.compare(other.getJackpotWinnings(), this.getJackpotWinnings());
+        if (winnings != 0) {
+            return winnings;
         }
-        return 0;
+        return Double.compare(other.getJackpotWins(), this.getJackpotWins());
     }
 
     public String getName() {
@@ -56,4 +50,3 @@ implements Comparable {
         this.ticketsPurchased = ticketsPurchased;
     }
 }
-

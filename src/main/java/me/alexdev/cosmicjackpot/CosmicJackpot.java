@@ -5,38 +5,56 @@ import me.alexdev.cosmicjackpot.listeners.JackpotListener;
 import me.alexdev.cosmicjackpot.struct.JackpotManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class CosmicJackpot
-extends JavaPlugin {
+public final class CosmicJackpot extends JavaPlugin {
     private static CosmicJackpot instance;
-    private JackpotManager jackpotManager;
+
     public static Economy economy;
 
+    private JackpotManager jackpotManager;
+
+    @Override
     public void onEnable() {
         instance = this;
-        CosmicJackpot.setupEconomy();
+        if (!this.setupEconomy()) {
+            this.getLogger().severe("Vault economy provider was not found. Disabling CosmicJackpot.");
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.registerCommands();
         this.jackpotManager = new JackpotManager();
         this.jackpotManager.loadFileData(this);
-        this.getServer().getPluginManager().registerEvents((Listener)new JackpotListener(), (Plugin)this);
-        this.getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)this, () -> this.jackpotManager.onJackpotTick(), 20L, 20L);
+        this.getServer().getPluginManager().registerEvents(new JackpotListener(), this);
+        this.getServer().getScheduler().runTaskTimer(this, () -> this.jackpotManager.onJackpotTick(), 20L, 20L);
     }
 
+    @Override
     public void onDisable() {
+        if (this.jackpotManager != null) {
+            this.jackpotManager.saveFileData();
+        }
         instance = null;
-        this.jackpotManager.saveFileData();
     }
 
     private void registerCommands() {
-        this.getCommand("jackpot").setExecutor((CommandExecutor)new CommandJackpot());
+        PluginCommand command = this.getCommand("jackpot");
+        if (command == null) {
+            throw new IllegalStateException("Command 'jackpot' is missing from plugin.yml");
+        }
+        command.setExecutor(new CommandJackpot());
     }
 
-    private static void setupEconomy() {
-        economy = (Economy)Bukkit.getServicesManager().getRegistration(Economy.class).getProvider();
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> provider = Bukkit.getServicesManager().getRegistration(Economy.class);
+        if (provider == null) {
+            return false;
+        }
+        economy = provider.getProvider();
+        return economy != null;
     }
 
     public static CosmicJackpot get() {
@@ -47,4 +65,3 @@ extends JavaPlugin {
         return this.jackpotManager;
     }
 }
-

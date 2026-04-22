@@ -1,26 +1,28 @@
 package me.alexdev.cosmicjackpot.struct;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import me.alexdev.cosmicjackpot.CosmicJackpot;
-import me.alexdev.cosmicjackpot.struct.PlayerInfo;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class Jackpot {
+    private static final int TICKET_PRICE = 10000;
+
     public static transient double TAX = 0.1;
-    private Map<PlayerInfo, Integer> entries = new ConcurrentHashMap<PlayerInfo, Integer>();
+
+    private Map<PlayerInfo, Integer> entries = new ConcurrentHashMap<>();
     private long totalWinnings;
     private int secondsLeft;
 
+    @Override
     public String toString() {
-        return this.totalWinnings + " - " + this.secondsLeft + " " + this.entries.size() + " entries.";
+        return "Jackpot{totalWinnings=" + this.totalWinnings
+                + ", secondsLeft=" + this.secondsLeft
+                + ", entries=" + this.entries.size() + "}";
     }
 
     public Jackpot() {
@@ -30,21 +32,20 @@ public class Jackpot {
         this.secondsLeft = timer;
     }
 
-    public void purchaseTicket(Player player, int tickets, int adjustedTickets) {
+    public void purchaseTicket(Player player, int tickets) {
         double cost = tickets * this.getTicketPrice();
-        EconomyResponse removed = CosmicJackpot.economy.withdrawPlayer((OfflinePlayer)player, cost);
+        EconomyResponse removed = CosmicJackpot.economy.withdrawPlayer(player, cost);
         if (!removed.transactionSuccess()) {
             Bukkit.getLogger().info("Transaction not successful for " + player.getName() + " for $" + cost + " with " + tickets + " tickets purchased!");
             return;
         }
+
         PlayerInfo info = new PlayerInfo(player);
         Integer current = this.entries.get(info);
-        Bukkit.getLogger().info("(CosmicJackpot) Purchasing " + tickets + " ticket(s) for " + player.getName() + (current != null ? " with " + current + " current total." : "0 current") + " adjusted=" + adjustedTickets);
-        if (adjustedTickets != tickets) {
-            tickets = adjustedTickets;
-        }
+        Bukkit.getLogger().info("(CosmicJackpot) Purchasing " + tickets + " ticket(s) for " + player.getName()
+                + (current != null ? " with " + current + " current total." : " with 0 current."));
         this.entries.put(info, (current == null ? 0 : current) + tickets);
-        this.totalWinnings = (long)((double)this.totalWinnings + cost);
+        this.totalWinnings += (long) cost;
     }
 
     public double getPercentHolder(Player player) {
@@ -69,27 +70,28 @@ public class Jackpot {
 
     public int getTicketsPurchased(UUID uuid) {
         int found = 0;
-        for (Map.Entry<PlayerInfo, Integer> entries : this.entries.entrySet()) {
-            if (!entries.getKey().getUuid().equals(uuid)) continue;
-            found += entries.getValue().intValue();
+        for (Map.Entry<PlayerInfo, Integer> entry : this.entries.entrySet()) {
+            if (entry.getKey().getUuid().equals(uuid)) {
+                found += entry.getValue();
+            }
         }
         return found;
     }
 
     public int getTicketPrice() {
-        return 10000;
+        return TICKET_PRICE;
     }
 
     public int getTicketsSold() {
         int total = 0;
-        for (Integer val : this.entries.values()) {
-            total += val.intValue();
+        for (Integer tickets : this.entries.values()) {
+            total += tickets;
         }
         return total;
     }
 
     public long getPlayerWinnings() {
-        long taxes = (long)((double)this.totalWinnings * TAX);
+        long taxes = (long) (this.totalWinnings * TAX);
         return this.totalWinnings - taxes;
     }
 
@@ -97,14 +99,16 @@ public class Jackpot {
         if (this.entries.isEmpty()) {
             return null;
         }
-        ArrayList winnerPool = new ArrayList();
-        this.entries.forEach((info, values) -> {
-            for (int i = 0; i < values; ++i) {
-                winnerPool.add(info);
+
+        int winningTicket = ThreadLocalRandom.current().nextInt(this.getTicketsSold());
+        int cursor = 0;
+        for (Map.Entry<PlayerInfo, Integer> entry : this.entries.entrySet()) {
+            cursor += entry.getValue();
+            if (winningTicket < cursor) {
+                return entry.getKey();
             }
-        });
-        Collections.shuffle(winnerPool);
-        return (PlayerInfo)winnerPool.get(ThreadLocalRandom.current().nextInt(winnerPool.size()));
+        }
+        return null;
     }
 
     public Map<PlayerInfo, Integer> getEntries() {
