@@ -8,7 +8,12 @@ CosmicJackpot is a Maven-based Bukkit/Spigot jackpot plugin using Vault for econ
 - Main: `me.alexdev.cosmicjackpot.CosmicJackpot`
 - Author: `Alex`
 - Dependency: `Vault`
-- Java target: `Java 8`
+- Compiled target: `Java 8` bytecode
+- Server Java runtime:
+  - `1.16.x`: Java 8
+  - `1.17.x`: Java 16
+  - `1.18.x` through `1.20.4`: Java 17
+  - `1.20.5` through `1.21.11`: Java 21
 - Intended server range: `1.16` through `1.21.11` Bukkit/Spigot-compatible versions
 
 ## Build
