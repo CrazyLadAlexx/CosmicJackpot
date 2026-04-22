@@ -1,0 +1,9 @@
+name: CosmicJackpot
+version: ${project.version}
+main: me.alexdev.cosmicjackpot.CosmicJackpot
+author: Alex
+depend: [Vault]
+commands:
+  jackpot:
+    description: Jackpot command.
+    usage: /jackpot
