@@ -26,6 +26,17 @@ The compiled plugin jar will be created in `target/`.
 3. Make sure Vault and an economy plugin are installed.
 4. Start or restart the server.
 
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `/jackpot` | View the current jackpot. |
+| `/jackpot buy` | Buy 1 jackpot ticket. |
+| `/jackpot buy <amount>` | Buy a specific amount of jackpot tickets. |
+| `/jackpot top` | View the top jackpot winners. |
+| `/jackpot stats` | View your jackpot stats. |
+| `/jackpot notifications` | Toggle jackpot countdown notifications. |
+
 ## Config
 
 ```yaml

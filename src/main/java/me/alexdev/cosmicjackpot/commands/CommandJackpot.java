@@ -92,7 +92,7 @@ implements CommandExecutor {
                     history = new JackpotHistory(pl.getName());
                 }
                 sender.sendMessage("");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString() + "Astro Jackpot Stats");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString() + "Cosmic Jackpot Stats");
                 String moneyString = ChatColor.LIGHT_PURPLE.toString() + ChatColor.BOLD + "$" + ChatColor.LIGHT_PURPLE + "%s";
                 sender.sendMessage(ChatColor.AQUA + "Total Winnings: " + String.format(moneyString, manager.getMoneyFormat().format(history.getJackpotWinnings())));
                 sender.sendMessage(ChatColor.AQUA + "Total Tickets Purchased: " + ChatColor.LIGHT_PURPLE + manager.getMoneyFormat().format(history.getTicketsPurchased()));
@@ -119,7 +119,7 @@ implements CommandExecutor {
                     return true;
                 }
                 sender.sendMessage("");
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString() + "Astro Jackpot");
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString() + "Cosmic Jackpot");
                 sender.sendMessage(ChatColor.AQUA + ChatColor.BOLD.toString() + "  Jackpot Value: " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD.toString() + "$" + ChatColor.LIGHT_PURPLE + manager.getMoneyFormat().format(current.getPlayerWinnings()) + ChatColor.GRAY + " (-" + (int)(Jackpot.TAX * 100.0) + "% tax)");
                 sender.sendMessage(ChatColor.AQUA + ChatColor.BOLD.toString() + "  Tickets Sold: " + ChatColor.YELLOW + manager.getMoneyFormat().format(current.getTicketsSold()));
                 sender.sendMessage(ChatColor.AQUA + ChatColor.BOLD.toString() + "  Your Tickets: " + ChatColor.GREEN + current.getTicketsPurchased((Player)sender) + ChatColor.GRAY + " (" + manager.getMoneyFormat().format(current.getPercentHolder((Player)sender)) + "%)");

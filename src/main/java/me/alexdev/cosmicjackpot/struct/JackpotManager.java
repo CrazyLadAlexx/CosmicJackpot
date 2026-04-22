@@ -62,7 +62,7 @@ public class JackpotManager {
                     if (secondsLeft >= 60) {
                         pl.sendMessage("");
                     }
-                    pl.sendMessage(ChatColor.AQUA + ChatColor.BOLD.toString() + "(!) " + ChatColor.AQUA + "Astro Jackpot (" + ChatColor.AQUA + ChatColor.BOLD + "$" + ChatColor.AQUA + this.getMoneyFormat().format(this.currentJackpot.getPlayerWinnings()) + ") drawing in " + ChatColor.AQUA + ChatColor.BOLD.toString() + (secondsLeft == 60 ? "60s" : TimeUtils.formatDifference(secondsLeft).trim()) + ChatColor.AQUA + "!");
+                    pl.sendMessage(ChatColor.AQUA + ChatColor.BOLD.toString() + "(!) " + ChatColor.AQUA + "Cosmic Jackpot (" + ChatColor.AQUA + ChatColor.BOLD + "$" + ChatColor.AQUA + this.getMoneyFormat().format(this.currentJackpot.getPlayerWinnings()) + ") drawing in " + ChatColor.AQUA + ChatColor.BOLD.toString() + (secondsLeft == 60 ? "60s" : TimeUtils.formatDifference(secondsLeft).trim()) + ChatColor.AQUA + "!");
                     if (secondsLeft > 5) {
                         pl.sendMessage(ChatColor.GRAY + "Use " + ChatColor.LIGHT_PURPLE + "/jackpot buy" + ChatColor.GRAY + " to purchase a ticket!");
                     }
