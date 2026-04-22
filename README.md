@@ -9,10 +9,17 @@ CosmicJackpot is a Maven-based Bukkit/Spigot jackpot plugin using Vault for econ
 - Author: `Alex`
 - Dependency: `Vault`
 - Compiled target: `Java 17` bytecode
-- Server Java runtime:
-  - `1.18.x` through `1.20.4`: Java 17
-  - `1.20.5` through `1.21.11`: Java 21
-- Intended server range: modern Bukkit/Spigot-compatible servers using the `1.20` API or newer
+
+## Supported Versions
+
+| Server version | Supported | Java runtime | Notes |
+| --- | --- | --- | --- |
+| `1.20.x` | Yes | Java 17+ | Primary supported version range. Built against Spigot API `1.20.4`. |
+| `1.21.x` | Yes | Java 21 recommended | Should work on modern Bukkit/Spigot/Paper-compatible servers. |
+| `1.18.x` - `1.19.x` | Likely | Java 17+ | Expected to work because the plugin uses standard Bukkit/Vault APIs, but not the primary build target. |
+| `1.17.x` and older | No | Java 16 or older | Not supported by this modernized build. |
+
+The plugin is compiled with Java 17. GitHub Actions and local builds must use JDK 17 or newer.
 
 ## Build
 
